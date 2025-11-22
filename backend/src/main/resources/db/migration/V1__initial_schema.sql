@@ -442,4 +442,17 @@ INSERT INTO permissions (name, description, category) VALUES
 ('CS2_UPDATE', 'Update CS2 servers', 'CS2'),
 ('CS2_DELETE', 'Delete CS2 servers', 'CS2'),
 ('AI_SCENARIO_CREATE', 'Create AI scenarios', 'AI'),
-('AI_SCENARIO_EXECUTE', 'Execute AI scenarios', 'AI');
+('AI_SCENARIO_EXECUTE', 'Execute AI scenarios', 'AI'),
+('NODE_CREATE', 'Create hypervisor nodes', 'NODE'),
+('NODE_READ', 'View hypervisor nodes', 'NODE'),
+('NODE_UPDATE', 'Update hypervisor nodes', 'NODE'),
+('NODE_DELETE', 'Delete hypervisor nodes', 'NODE');
+
+-- Assign all permissions to ROLE_ADMIN for simplicity
+-- In a real application, you would be more granular
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT
+    (SELECT id FROM roles WHERE name = 'ROLE_ADMIN'),
+    p.id
+FROM
+    permissions p;

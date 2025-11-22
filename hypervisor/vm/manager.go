@@ -18,8 +18,8 @@ func NewManager(database *gorm.DB) *Manager {
 	return &Manager{db: database}
 }
 
-func (m *Manager) CreateVM(name string, cpuCores, memoryMB, diskGB int, osType string) (*db.VirtualMachine, error) {
-	vm, err := db.CreateVM(m.db, name, cpuCores, memoryMB, diskGB, osType)
+func (m *Manager) CreateVM(name string, cpuCores, memoryMB, diskGB int, osType string, cloudInitData string) (*db.VirtualMachine, error) {
+	vm, err := db.CreateVM(m.db, name, cpuCores, memoryMB, diskGB, osType, cloudInitData)
 	if err != nil {
 		return nil, err
 	}

@@ -1,0 +1,42 @@
+<div class="subscription-list-container">
+  <div class="spinner-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <table mat-table [dataSource]="dataSource" *ngIf="!loading">
+
+    <!-- Plan Column -->
+    <ng-container matColumnDef="plan">
+      <th mat-header-cell *matHeaderCellDef> Plan </th>
+      <td mat-cell *matCellDef="let sub"> {{sub.plan.name}} </td>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let sub"> {{sub.status}} </td>
+    </ng-container>
+
+    <!-- Start Date Column -->
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef> Start Date </th>
+      <td mat-cell *matCellDef="let sub"> {{sub.startDate | date}} </td>
+    </ng-container>
+
+    <!-- End Date Column -->
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef> End Date </th>
+      <td mat-cell *matCellDef="let sub"> {{sub.endDate | date}} </td>
+    </ng-container>
+
+    <!-- Auto-renew Column -->
+    <ng-container matColumnDef="autoRenew">
+      <th mat-header-cell *matHeaderCellDef> Auto-renews </th>
+      <td mat-cell *matCellDef="let sub">
+        <mat-icon>{{ sub.autoRenew ? 'check_circle' : 'cancel' }}</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Add New Hypervisor Node</h1>
+<div mat-dialog-content>
+  <form [formGroup]="nodeForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Node Name</mat-label>
+      <input matInput formControlName="name" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>IP Address</mat-label>
+      <input matInput formControlName="ipAddress" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Port</mat-label>
+      <input matInput formControlName="port" type="number" required>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="nodeForm.invalid || loading">
+    <span *ngIf="!loading">Add Node</span>
+    <mat-spinner *ngIf="loading" diameter="24"></mat-spinner>
+  </button>
+</div>

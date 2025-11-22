@@ -1,0 +1,15 @@
+.plan-list-container {
+  padding: 2rem;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.plan-card {
+  width: 90%;
+  height: 90%;
+}

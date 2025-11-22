@@ -1,0 +1,21 @@
+<div class="dashboard-container">
+  <h1>Dashboard</h1>
+  <div class="spinner-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-grid-list cols="4" rowHeight="200px" *ngIf="!loading">
+    <mat-grid-tile *ngFor="let card of summaryCards">
+      <mat-card class="dashboard-card" [ngClass]="card.color">
+        <mat-card-header>
+          <div mat-card-avatar>
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <mat-card-title>{{ card.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="card-value">{{ card.value }}</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -4,7 +4,16 @@
       "Bash(git --version)",
       "Bash(git init:*)",
       "Bash(git config:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(ssh:*)",
+      "Bash(curl -I https://raw.githubusercontent.com/KolyanCat128/cs2panel/main/scripts/install-hypervisor.sh)",
+      "Bash(ls:*)",
+      "Bash(GOOS=linux GOARCH=amd64 go build:*)"
     ],
     "deny": [],
     "ask": []

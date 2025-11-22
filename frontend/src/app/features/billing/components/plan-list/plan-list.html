@@ -1,0 +1,26 @@
+<div class="plan-list-container">
+  <div class="spinner-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-grid-list cols="3" rowHeight="400px" *ngIf="!loading">
+    <mat-grid-tile *ngFor="let plan of plans">
+      <mat-card class="plan-card">
+        <mat-card-header>
+          <mat-card-title>{{ plan.name }}</mat-card-title>
+          <mat-card-subtitle>{{ plan.price | currency:plan.currency }} / {{ plan.billingCycle }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ plan.description }}</p>
+          <ul>
+            <li>{{ plan.cpuCores }} CPU Cores</li>
+            <li>{{ plan.memoryMb }} MB Memory</li>
+            <li>{{ plan.diskGb }} GB Disk</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="onSubscribe(plan)">Subscribe</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,48 @@
+<div class="vm-details-container">
+  <div class="spinner-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && vm">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ vm.name }}</mat-card-title>
+        <mat-card-subtitle>{{ vm.status }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListItemIcon>memory</mat-icon>
+            <span matListItemTitle>CPU Cores</span>
+            <span matListItemLine>{{ vm.cpuCores }}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>memory</mat-icon>
+            <span matListItemTitle>Memory</span>
+            <span matListItemLine>{{ vm.memoryMb }} MB</span>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>storage</mat-icon>
+            <span matListItemTitle>Disk</span>
+            <span matListItemLine>{{ vm.diskGb }} GB</span>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>public</mat-icon>
+            <span matListItemTitle>IP Address</span>
+            <span matListItemLine>{{ vm.ipAddress }}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>computer</mat-icon>
+            <span matListItemTitle>OS Type</span>
+            <span matListItemLine>{{ vm.osType }}</span>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="onStart()">Start</button>
+        <button mat-raised-button color="warn" (click)="onStop()">Stop</button>
+        <button mat-raised-button (click)="onReboot()">Reboot</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

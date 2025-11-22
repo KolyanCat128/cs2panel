@@ -9,18 +9,19 @@ import (
 )
 
 type VirtualMachine struct {
-	ID         uint      `gorm:"primaryKey"`
-	UUID       string    `gorm:"uniqueIndex;not null"`
-	Name       string    `gorm:"not null"`
-	Status     string    `gorm:"default:STOPPED"`
-	CPUCores   int       `gorm:"not null"`
-	MemoryMB   int       `gorm:"not null"`
-	DiskGB     int       `gorm:"not null"`
-	OSType     string
-	PID        int
-	VNCPort    int
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	ID            uint      `gorm:"primaryKey"`
+	UUID          string    `gorm:"uniqueIndex;not null"`
+	Name          string    `gorm:"not null"`
+	Status        string    `gorm:"default:STOPPED"`
+	CPUCores      int       `gorm:"not null"`
+	MemoryMB      int       `gorm:"not null"`
+	DiskGB        int       `gorm:"not null"`
+	OSType        string
+	CloudInitData string `gorm:"type:text"`
+	PID           int
+	VNCPort       int
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
 }
 
 func Initialize(dbPath string) (*gorm.DB, error) {
@@ -37,15 +38,16 @@ func Initialize(dbPath string) (*gorm.DB, error) {
 	return db, nil
 }
 
-func CreateVM(db *gorm.DB, name string, cpuCores, memoryMB, diskGB int, osType string) (*VirtualMachine, error) {
+func CreateVM(db *gorm.DB, name string, cpuCores, memoryMB, diskGB int, osType string, cloudInitData string) (*VirtualMachine, error) {
 	vm := &VirtualMachine{
-		UUID:     uuid.New().String(),
-		Name:     name,
-		Status:   "STOPPED",
-		CPUCores: cpuCores,
-		MemoryMB: memoryMB,
-		DiskGB:   diskGB,
-		OSType:   osType,
+		UUID:          uuid.New().String(),
+		Name:          name,
+		Status:        "STOPPED",
+		CPUCores:      cpuCores,
+		MemoryMB:      memoryMB,
+		DiskGB:        diskGB,
+		OSType:        osType,
+		CloudInitData: cloudInitData,
 	}
 
 	result := db.Create(vm)

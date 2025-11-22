@@ -34,7 +34,8 @@ public class HypervisorClient {
                 "cpu_cores", vm.getCpuCores(),
                 "memory_mb", vm.getMemoryMb(),
                 "disk_gb", vm.getDiskGb(),
-                "os_type", vm.getOsType() != null ? vm.getOsType() : "linux"
+                "os_type", vm.getOsType() != null ? vm.getOsType() : "linux",
+                "cloud_init_data", vm.getCloudInitData() != null ? vm.getCloudInitData() : ""
         );
 
         webClientBuilder.build()
@@ -106,6 +107,20 @@ public class HypervisorClient {
                 .block();
 
         log.info("VM deleted on hypervisor: {}", vmUuid);
+    }
+
+
+    @CircuitBreaker(name = "hypervisor")
+    @Retry(name = "hypervisor")
+    public Map<String, Object> getMetrics(HypervisorNode node) {
+        String url = buildNodeUrl(node) + "/v1/metrics";
+
+        return webClientBuilder.build()
+                .get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
     }
 
     private String buildNodeUrl(HypervisorNode node) {

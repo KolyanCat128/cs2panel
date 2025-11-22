@@ -8,12 +8,13 @@ import (
 )
 
 type VMCreateRequest struct {
-	UUID     string `json:"uuid"`
-	Name     string `json:"name" binding:"required"`
-	CPUCores int    `json:"cpu_cores" binding:"required,min=1"`
-	MemoryMB int    `json:"memory_mb" binding:"required,min=512"`
-	DiskGB   int    `json:"disk_gb" binding:"required,min=10"`
-	OSType   string `json:"os_type"`
+	UUID          string `json:"uuid"`
+	Name          string `json:"name" binding:"required"`
+	CPUCores      int    `json:"cpu_cores" binding:"required,min=1"`
+	MemoryMB      int    `json:"memory_mb" binding:"required,min=512"`
+	DiskGB        int    `json:"disk_gb" binding:"required,min=10"`
+	OSType        string `json:"os_type"`
+	CloudInitData string `json:"cloud_init_data"`
 }
 
 func SetupRoutes(r *gin.Engine, vmManager *vm.Manager) {
@@ -77,7 +78,7 @@ func SetupRoutes(r *gin.Engine, vmManager *vm.Manager) {
 					return
 				}
 
-				vm, err := vmManager.CreateVM(req.Name, req.CPUCores, req.MemoryMB, req.DiskGB, req.OSType)
+				vm, err := vmManager.CreateVM(req.Name, req.CPUCores, req.MemoryMB, req.DiskGB, req.OSType, req.CloudInitData)
 				if err != nil {
 					c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 					return

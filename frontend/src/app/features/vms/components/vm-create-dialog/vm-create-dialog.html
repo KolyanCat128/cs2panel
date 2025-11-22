@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>Create New Virtual Machine</h1>
+<div mat-dialog-content>
+  <form [formGroup]="vmForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>VM Name</mat-label>
+      <input matInput formControlName="name" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>CPU Cores</mat-label>
+      <input matInput formControlName="cpuCores" type="number" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Memory (MB)</mat-label>
+      <input matInput formControlName="memoryMb" type="number" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Disk (GB)</mat-label>
+      <input matInput formControlName="diskGb" type="number" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>OS Type</mat-label>
+      <mat-select formControlName="osType">
+        <mat-option *ngFor="let os of osTypes" [value]="os">{{ os }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Cloud-Init Data</mat-label>
+      <textarea matInput formControlName="cloudInitData" rows="5"></textarea>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="vmForm.invalid || loading">
+    <span *ngIf="!loading">Create VM</span>
+    <mat-spinner *ngIf="loading" diameter="24"></mat-spinner>
+  </button>
+</div>

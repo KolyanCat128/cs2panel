@@ -1,0 +1,69 @@
+<div class="vm-list-container">
+  <div class="header">
+    <h1>Virtual Machines</h1>
+    <button mat-raised-button color="primary" (click)="openCreateVmDialog()">Create VM</button>
+  </div>
+
+  <div class="spinner-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div [hidden]="loading">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let vm"> {{vm.name}} </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let vm"> {{vm.status}} </td>
+      </ng-container>
+
+      <!-- CPU Column -->
+      <ng-container matColumnDef="cpuCores">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> CPU Cores </th>
+        <td mat-cell *matCellDef="let vm"> {{vm.cpuCores}} </td>
+      </ng-container>
+
+      <!-- Memory Column -->
+      <ng-container matColumnDef="memoryMb">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Memory (MB) </th>
+        <td mat-cell *matCellDef="let vm"> {{vm.memoryMb}} </td>
+      </ng-container>
+
+      <!-- IP Address Column -->
+      <ng-container matColumnDef="ipAddress">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> IP Address </th>
+        <td mat-cell *matCellDef="let vm"> {{vm.ipAddress}} </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let vm">
+          <button mat-icon-button color="primary" [routerLink]="['/vms', vm.id]" matTooltip="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="onStart(vm)" matTooltip="Start VM">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onStop(vm)" matTooltip="Stop VM">
+            <mat-icon>stop</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onDelete(vm)" matTooltip="Delete VM">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+
