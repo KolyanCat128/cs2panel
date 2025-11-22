@@ -106,7 +106,7 @@ services:
       - GRPC_PORT=9090
       - LOG_LEVEL=info
     ports:
-      - "8081:8080"
+      - "8082:8080"
       - "9091:9090"
     volumes:
       - hypervisor-data:/data
@@ -141,8 +141,6 @@ services:
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-your-deepseek-api-key}
       DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:-your-discord-token}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-your-telegram-token}
-    ports:
-      - "8080:8080"
     networks:
       - cs2panel-network
     depends_on:
@@ -162,6 +160,19 @@ services:
       timeout: 10s
       retries: 5
       start_period: 60s
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cs2panel-frontend
+    ports:
+      - "80:80"
+    networks:
+      - cs2panel-network
+    depends_on:
+      - backend
 
 networks:
   cs2panel-network:
