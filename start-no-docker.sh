@@ -11,6 +11,7 @@ check_command() {
 
 # --- Dependency Checks ---
 echo "Checking for dependencies..."
+check_command git
 check_command java
 check_command mvn
 check_command go
@@ -18,6 +19,16 @@ check_command node
 check_command npm
 check_command psql
 echo "All dependencies found."
+
+# --- Clone or update the repository ---
+if [ ! -d "cs2panel" ]; then
+  echo "Cloning the cs2panel repository..."
+  git clone https://github.com/KolyanCat128/cs2panel.git
+fi
+
+cd cs2panel
+echo "Updating the project from GitHub..."
+git pull origin main
 
 # --- Database Setup (Manual Steps) ---
 echo "--------------------------------------------------"
