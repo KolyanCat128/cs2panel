@@ -2,7 +2,6 @@ package vm
 
 import (
 	"fmt"
-	"os/exec"
 	"strconv"
 
 	"github.com/cs2panel/hypervisor/db"
