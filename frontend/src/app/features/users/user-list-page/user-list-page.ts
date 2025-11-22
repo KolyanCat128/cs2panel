@@ -11,8 +11,8 @@ import { User } from '../../../common/models/user';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../../shared/components/confirm-dialog/confirm-dialog';
-// import { UserCreateDialogComponent } from '../components/user-create-dialog/user-create-dialog';
-// import { UserEditDialogComponent } from '../components/user-edit-dialog/user-edit-dialog';
+import { UserCreateDialogComponent } from '../components/user-create-dialog/user-create-dialog';
+import { UserEditDialogComponent } from '../components/user-edit-dialog/user-edit-dialog';
 
 @Component({
   selector: 'app-user-list-page',
@@ -62,16 +62,6 @@ export class UserListPageComponent implements OnInit {
     });
   }
 
-  import { UserCreateDialogComponent } from '../components/user-create-dialog/user-create-dialog';
-
-// ... (existing imports)
-
-@Component({
-  // ... (existing component decorator)
-})
-export class UserListPageComponent implements OnInit {
-  // ... (existing properties)
-
   openCreateUserDialog(): void {
     const dialogRef = this.dialog.open(UserCreateDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
@@ -81,20 +71,6 @@ export class UserListPageComponent implements OnInit {
     });
   }
 
-  // ... (existing methods)
-}
-
-
-  import { UserEditDialogComponent } from '../components/user-edit-dialog/user-edit-dialog';
-
-// ... (existing imports)
-
-@Component({
-  // ... (existing component decorator)
-})
-export class UserListPageComponent implements OnInit {
-  // ... (existing properties)
-
   openEditUserDialog(user: User): void {
     const dialogRef = this.dialog.open(UserEditDialogComponent, { data: user });
     dialogRef.afterClosed().subscribe(result => {
@@ -103,10 +79,6 @@ export class UserListPageComponent implements OnInit {
       }
     });
   }
-
-  // ... (existing methods)
-}
-
 
   onDelete(user: User): void {
     const dialogData: ConfirmDialogData = {

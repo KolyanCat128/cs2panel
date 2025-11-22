@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { BillingService } from '../../billing';
 import { Subscription } from '../../../../common/models/subscription';
 import { ToastrService } from 'ngx-toastr';
@@ -12,7 +13,8 @@ import { ToastrService } from 'ngx-toastr';
   imports: [
     CommonModule,
     MatTableModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   templateUrl: './subscription-list.html',
   styleUrl: './subscription-list.css',

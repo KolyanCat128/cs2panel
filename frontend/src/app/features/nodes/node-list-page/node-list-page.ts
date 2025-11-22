@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -11,12 +12,14 @@ import { HypervisorNode } from '../../../common/models/hypervisor-node';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NodeAddDialogComponent } from '../components/node-add-dialog/node-add-dialog';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-node-list-page',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -70,16 +73,6 @@ export class NodeListPageComponent implements OnInit {
     });
   }
 
-  import { ConfirmDialogComponent, ConfirmDialogData } from '../../../shared/components/confirm-dialog/confirm-dialog';
-
-// ... (existing imports)
-
-@Component({
-  // ... (existing component decorator)
-})
-export class NodeListPageComponent implements OnInit {
-  // ... (existing properties)
-
   onDelete(node: HypervisorNode): void {
     const dialogData: ConfirmDialogData = {
       title: 'Confirm Deletion',
@@ -99,8 +92,4 @@ export class NodeListPageComponent implements OnInit {
       }
     });
   }
-
-  // ... (existing methods)
-}
-
 }
