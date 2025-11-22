@@ -1,0 +1,268 @@
+spring:
+  application:
+    name: cs2panel
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/cs2panel}
+    username: ${SPRING_DATASOURCE_USERNAME:cs2panel}
+    password: ${SPRING_DATASOURCE_PASSWORD:cs2panel_dev_password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  redis:
+    host: ${SPRING_REDIS_HOST:localhost}
+    port: ${SPRING_REDIS_PORT:6379}
+    password: ${SPRING_REDIS_PASSWORD:}
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 2
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:cs2panel}
+    password: ${SPRING_RABBITMQ_PASSWORD:cs2panel_dev_password}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3000
+          max-attempts: 3
+          multiplier: 2
+
+  cloud:
+    stream:
+      bindings:
+        vmEvents-out-0:
+          destination: vm.events
+        billingEvents-out-0:
+          destination: billing.events
+        monitoringMetrics-out-0:
+          destination: monitoring.metrics
+        aiJobs-out-0:
+          destination: ai.jobs
+        aiJobs-in-0:
+          destination: ai.jobs
+          group: ai-workers
+
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+
+server:
+  port: ${SERVER_PORT:8080}
+  compression:
+    enabled: true
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics,env
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+  tracing:
+    sampling:
+      probability: 0.1
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: true
+
+# Application Configuration
+app:
+  jwt:
+    secret: ${JWT_SECRET:development-secret-key-change-in-production-min-256-bits-very-important}
+    access-token-expiration: 900000      # 15 minutes
+    refresh-token-expiration: 604800000  # 7 days
+
+  security:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
+    rate-limit:
+      enabled: true
+      requests-per-minute: 60
+
+  hypervisor:
+    base-url: ${HYPERVISOR_BASE_URL:http://localhost:8081}
+    grpc-host: ${HYPERVISOR_GRPC_HOST:localhost}
+    grpc-port: ${HYPERVISOR_GRPC_PORT:9091}
+    timeout: 30000
+    retry:
+      max-attempts: 3
+      backoff-ms: 1000
+
+  minio:
+    endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+    access-key: ${MINIO_ACCESS_KEY:cs2panel}
+    secret-key: ${MINIO_SECRET_KEY:cs2panel_dev_password}
+    bucket:
+      scenarios: scenarios
+      artifacts: artifacts
+      backups: backups
+      iso-images: iso-images
+
+  deepseek:
+    api-key: ${DEEPSEEK_API_KEY:}
+    api-url: https://api.deepseek.com/v1
+    model: deepseek-coder-v3
+    timeout: 120000
+    max-tokens: 8000
+
+  discord:
+    bot-token: ${DISCORD_BOT_TOKEN:}
+    guild-id: ${DISCORD_GUILD_ID:}
+    enabled: ${DISCORD_ENABLED:false}
+    command-prefix: "!"
+
+  telegram:
+    bot-token: ${TELEGRAM_BOT_TOKEN:}
+    bot-username: ${TELEGRAM_BOT_USERNAME:CS2PanelBot}
+    chat-id: ${TELEGRAM_CHAT_ID:}
+    enabled: ${TELEGRAM_ENABLED:false}
+
+  kubernetes:
+    enabled: ${K8S_ENABLED:false}
+    kubeconfig-path: ${KUBECONFIG_PATH:~/.kube/config}
+    namespace: ${K8S_NAMESPACE:cs2-servers}
+    reconciliation-interval: 30000
+
+  cs2:
+    steamcmd-path: ${STEAMCMD_PATH:/opt/steamcmd}
+    servers-base-path: ${CS2_SERVERS_PATH:/opt/cs2-servers}
+    default-tickrate: 128
+    default-maxplayers: 32
+
+  monitoring:
+    metrics-retention-days: 30
+    alert-cooldown-minutes: 15
+
+  billing:
+    currency: USD
+    tax-rate: 0.0
+    trial-period-days: 7
+    invoice-due-days: 14
+
+  payment:
+    stripe:
+      secret-key: ${STRIPE_SECRET_KEY:}
+      webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
+      enabled: ${STRIPE_ENABLED:false}
+    paypal:
+      client-id: ${PAYPAL_CLIENT_ID:}
+      secret: ${PAYPAL_SECRET:}
+      mode: ${PAYPAL_MODE:sandbox}
+      enabled: ${PAYPAL_ENABLED:false}
+
+logging:
+  level:
+    root: INFO
+    com.example.cs2panel: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/cs2panel.log
+    max-size: 10MB
+    max-history: 30
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      hypervisor:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        permitted-number-of-calls-in-half-open-state: 3
+      deepseek:
+        sliding-window-size: 5
+        failure-rate-threshold: 60
+        wait-duration-in-open-state: 30000
+
+  retry:
+    instances:
+      hypervisor:
+        max-attempts: 3
+        wait-duration: 1000
+      deepseek:
+        max-attempts: 2
+        wait-duration: 2000

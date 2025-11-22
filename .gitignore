@@ -1,0 +1,85 @@
+# Compiled class files
+*.class
+*.log
+
+# Maven
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+
+# Gradle
+backend/.gradle/
+backend/build/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# Go
+hypervisor/bin/
+hypervisor/vendor/
+hypervisor/*.exe
+hypervisor/hypervisor-daemon
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+*.env.local
+secrets/
+
+# Build artifacts
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Node modules (if any frontend)
+node_modules/
+npm-debug.log*
+
+# Kubernetes secrets
+k8s/secrets/
+k8s/*-secret.yaml
+
+# Docker volumes
+volumes/
+
+# ISO builds
+scripts/iso-build/
+scripts/*.iso
+
+# AI workspace
+ai-workspace/
+scenarios-workspace/

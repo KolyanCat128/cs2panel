@@ -1,0 +1,28 @@
+apiVersion: v2
+name: cs2panel
+description: A Helm chart for CS2 Infrastructure Panel
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - cs2
+  - counter-strike
+  - game-server
+  - infrastructure
+  - virtualization
+maintainers:
+  - name: CS2Panel Team
+    email: support@cs2panel.example.com
+dependencies:
+  - name: postgresql
+    version: "12.x.x"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: postgresql.enabled
+  - name: redis
+    version: "17.x.x"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled
+  - name: rabbitmq
+    version: "12.x.x"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: rabbitmq.enabled

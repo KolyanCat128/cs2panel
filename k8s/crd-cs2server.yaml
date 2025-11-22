@@ -1,0 +1,91 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: cs2servers.cs2panel.example.com
+spec:
+  group: cs2panel.example.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                serverName:
+                  type: string
+                  description: "Name of the CS2 server"
+                replicas:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: "Number of server replicas"
+                maxPlayers:
+                  type: integer
+                  default: 32
+                  description: "Maximum number of players"
+                tickrate:
+                  type: integer
+                  default: 128
+                  description: "Server tickrate"
+                map:
+                  type: string
+                  default: "de_dust2"
+                  description: "Default map"
+                gameMode:
+                  type: string
+                  default: "competitive"
+                  description: "Game mode"
+                resources:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      default: "2000m"
+                    memory:
+                      type: string
+                      default: "4Gi"
+                plugins:
+                  type: array
+                  items:
+                    type: string
+                  description: "List of plugin names to install"
+              required:
+                - serverName
+            status:
+              type: object
+              properties:
+                phase:
+                  type: string
+                  description: "Current phase (Pending, Running, Failed)"
+                readyReplicas:
+                  type: integer
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      status:
+                        type: string
+                      lastTransitionTime:
+                        type: string
+                        format: date-time
+                      reason:
+                        type: string
+                      message:
+                        type: string
+      subresources:
+        status: {}
+  scope: Namespaced
+  names:
+    plural: cs2servers
+    singular: cs2server
+    kind: CS2Server
+    shortNames:
+      - cs2

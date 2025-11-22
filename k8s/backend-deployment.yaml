@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cs2panel-backend
+  namespace: cs2panel
+  labels:
+    app: cs2panel
+    component: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cs2panel
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: cs2panel
+        component: backend
+    spec:
+      containers:
+        - name: backend
+          image: cs2panel/backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "production"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/cs2panel"
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cs2panel-secrets
+                  key: db-username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cs2panel-secrets
+                  key: db-password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cs2panel-secrets
+                  key: jwt-secret
+            - name: DEEPSEEK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cs2panel-secrets
+                  key: deepseek-api-key
+            - name: SPRING_REDIS_HOST
+              value: "redis"
+            - name: SPRING_RABBITMQ_HOST
+              value: "rabbitmq"
+            - name: MINIO_ENDPOINT
+              value: "http://minio:9000"
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cs2panel-backend
+  namespace: cs2panel
+spec:
+  selector:
+    app: cs2panel
+    component: backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

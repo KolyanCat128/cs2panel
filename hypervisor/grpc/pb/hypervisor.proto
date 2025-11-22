@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package hypervisor;
+
+option go_package = "github.com/cs2panel/hypervisor/grpc/pb";
+
+service HypervisorService {
+  rpc CreateVM(CreateVMRequest) returns (VMResponse);
+  rpc StartVM(VMActionRequest) returns (VMResponse);
+  rpc StopVM(VMActionRequest) returns (VMResponse);
+  rpc DeleteVM(VMActionRequest) returns (VMResponse);
+  rpc ListVMs(ListVMsRequest) returns (ListVMsResponse);
+}
+
+message CreateVMRequest {
+  string name = 1;
+  int32 cpu_cores = 2;
+  int32 memory_mb = 3;
+  int32 disk_gb = 4;
+  string os_type = 5;
+}
+
+message VMActionRequest {
+  string uuid = 1;
+}
+
+message VMResponse {
+  string uuid = 1;
+  string name = 2;
+  string status = 3;
+  int32 cpu_cores = 4;
+  int32 memory_mb = 5;
+  int32 disk_gb = 6;
+}
+
+message ListVMsRequest {}
+
+message ListVMsResponse {
+  repeated VMResponse vms = 1;
+}

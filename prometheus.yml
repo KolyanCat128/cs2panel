@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'cs2panel-backend'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['backend:8080']
+        labels:
+          application: 'cs2panel-backend'
+
+  - job_name: 'hypervisor-daemon'
+    static_configs:
+      - targets: ['hypervisor:8080']
+        labels:
+          application: 'hypervisor-daemon'
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

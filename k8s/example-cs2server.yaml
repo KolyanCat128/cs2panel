@@ -1,0 +1,19 @@
+apiVersion: cs2panel.example.com/v1
+kind: CS2Server
+metadata:
+  name: competitive-server-01
+  namespace: cs2panel
+spec:
+  serverName: "CS2Panel Competitive #1"
+  replicas: 1
+  maxPlayers: 10
+  tickrate: 128
+  map: "de_dust2"
+  gameMode: "competitive"
+  resources:
+    cpu: "2000m"
+    memory: "4Gi"
+  plugins:
+    - "practicemode"
+    - "retakes"
+    - "aimtraining"

@@ -1,0 +1,106 @@
+replicaCount: 2
+
+image:
+  backend:
+    repository: cs2panel/backend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  hypervisor:
+    repository: cs2panel/hypervisor
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: api.cs2panel.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: cs2panel-tls
+      hosts:
+        - api.cs2panel.example.com
+
+resources:
+  backend:
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  hypervisor:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+postgresql:
+  enabled: true
+  auth:
+    username: cs2panel
+    password: changeme
+    database: cs2panel
+  primary:
+    persistence:
+      enabled: true
+      size: 20Gi
+
+redis:
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: true
+      size: 8Gi
+
+rabbitmq:
+  enabled: true
+  auth:
+    username: cs2panel
+    password: changeme
+  persistence:
+    enabled: true
+    size: 8Gi
+
+minio:
+  enabled: true
+  rootUser: cs2panel
+  rootPassword: changeme
+  persistence:
+    enabled: true
+    size: 50Gi
+
+secrets:
+  jwtSecret: "change-this-to-a-secure-random-string"
+  deepseekApiKey: "your-deepseek-api-key"
+  discordBotToken: ""
+  telegramBotToken: ""
+
+config:
+  deepseek:
+    enabled: true
+  discord:
+    enabled: false
+  telegram:
+    enabled: false
+  kubernetes:
+    enabled: true
+    namespace: cs2-servers
