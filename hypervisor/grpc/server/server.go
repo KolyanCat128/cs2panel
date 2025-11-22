@@ -21,7 +21,7 @@ func RegisterServices(s *grpc.Server, vmManager *vm.Manager) {
 func (s *HypervisorServer) CreateVM(ctx context.Context, req *pb.CreateVMRequest) (*pb.VMResponse, error) {
 	log.Infof("gRPC CreateVM: %s", req.Name)
 
-	vm, err := s.vmManager.CreateVM(req.Name, int(req.CpuCores), int(req.MemoryMb), int(req.DiskGb), req.OsType)
+	vm, err := s.vmManager.CreateVM(req.Name, int(req.CpuCores), int(req.MemoryMb), int(req.DiskGb), req.OsType, req.CloudInitData)
 	if err != nil {
 		return nil, err
 	}

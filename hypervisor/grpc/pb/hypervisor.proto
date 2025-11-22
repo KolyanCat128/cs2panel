@@ -18,6 +18,7 @@ message CreateVMRequest {
   int32 memory_mb = 3;
   int32 disk_gb = 4;
   string os_type = 5;
+  string cloud_init_data = 6;
 }
 
 message VMActionRequest {
