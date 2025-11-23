@@ -68,10 +68,10 @@ public class HypervisorNodeService {
             // Assuming the metrics map contains these keys.
             // This needs to match the response from the hypervisor's /v1/metrics endpoint
             if (metrics.containsKey("cpu_cores_total")) {
-                node.setCpuCores(((Number) metrics.get("cpu_cores_total")).longValue());
+                node.setCpuCores(((Number) metrics.get("cpu_cores_total")).intValue());
             }
             if (metrics.containsKey("cpu_cores_used")) {
-                node.setCpuUsed(((Number) metrics.get("cpu_cores_used")).longValue());
+                node.setCpuUsed(((Number) metrics.get("cpu_cores_used")).intValue());
             }
             if (metrics.containsKey("memory_total_mb")) {
                 node.setMemoryTotalMb(((Number) metrics.get("memory_total_mb")).longValue());

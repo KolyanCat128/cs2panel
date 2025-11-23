@@ -34,9 +34,7 @@ public class KubernetesService {
         }
 
         try {
-            Config config = new ConfigBuilder()
-                    .withKubeconfigPath(kubeconfigPath)
-                    .build();
+            Config config = Config.autoConfigure(kubeconfigPath);
             client = new KubernetesClientBuilder().withConfig(config).build();
             log.info("Kubernetes client initialized");
         } catch (Exception e) {
@@ -69,9 +67,10 @@ public class KubernetesService {
 
         Namespace ns = client.namespaces().withName(namespace).get();
         if (ns == null) {
-            client.namespaces().createNew()
+            Namespace newNs = new io.fabric8.kubernetes.api.model.NamespaceBuilder()
                     .withNewMetadata().withName(namespace).endMetadata()
-                    .done();
+                    .build();
+            client.namespaces().resource(newNs).create();
             log.info("Created namespace: {}", namespace);
         }
     }
